@@ -14,7 +14,7 @@ WORKDIR /app
 COPY ../ ./
 
 # Install Python dependencies
-RUN pip install -e .
+RUN pip install -r requirements.txt
 
 RUN python -c 'from marker.models import load_all_models; load_all_models()'
 
