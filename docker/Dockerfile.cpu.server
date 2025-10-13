@@ -1,5 +1,5 @@
 # Use a base image with Python
-FROM python:3.11-slim
+FROM python:3.11-slim-bookworm
 
 # Install system dependencies required for libGL
 RUN apt-get update && apt-get install -y \
