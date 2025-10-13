@@ -8,7 +8,6 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     HF_HOME=/models/hf \
     MPLCONFIGDIR=/tmp/mpl
 
-# System deps for OpenCV/libGL
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libgl1-mesa-glx \
     libglib2.0-0 \
@@ -16,14 +15,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 WORKDIR /app
 
-# IMPORTANT: build context must be the repo root so pyproject.toml is copied
-COPY . /app
+# Force full copy from repo root
+COPY ../pyproject.toml /app/
+COPY ../poetry.lock /app/
+COPY ../server.py /app/
+COPY ../marker_api /app/marker_api
 
-# Install project (pyproject/Poetry-style)
-RUN python -m pip install --upgrade pip && \
-    pip install -e .
+RUN python -m pip install --upgrade pip && pip install -e .
 
-# Optional: warm up Marker models into HF cache
 RUN python -c "from marker.models import load_all_models; load_all_models()"
 
 EXPOSE 8080
