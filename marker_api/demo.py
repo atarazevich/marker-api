@@ -53,24 +53,33 @@ def parse_document(input_file_path, parameters, request: gr.Request):
             mime_type = "application/octet-stream"  # Default MIME type if not found
 
         with open(input_file_path, "rb") as f:
-            files = {"file": (input_file_path, f, mime_type)}
+            files = {"pdf_file": (os.path.basename(input_file_path), f, mime_type)}
             response = requests.post(
                 post_url, files=files, headers={"accept": "application/json"}
             )
 
         document_response = response.json()
 
-        images = document_response.get("images", [])
+        # Extract the result object
+        result = document_response.get("result", {})
+        markdown_text = result.get("markdown", "No markdown content available")
+        images_dict = result.get("images", {})
 
         # Decode each base64-encoded image to a PIL image
-        pil_images = [
-            decode_base64_to_pil(image_dict["image"]) for image_dict in images
-        ]
+        pil_images = []
+        for img_name, img_base64 in images_dict.items():
+            # Remove data URL prefix if present
+            if img_base64.startswith("data:image"):
+                img_base64 = img_base64.split(",", 1)[1]
+            try:
+                pil_images.append(decode_base64_to_pil(img_base64))
+            except Exception as e:
+                print(f"Failed to decode image {img_name}: {e}")
 
         return (
-            str(document_response["text"]),
-            gr.Gallery(value=pil_images, visible=True),
-            str(document_response["text"]),
+            markdown_text,
+            gr.Gallery(value=pil_images, visible=True) if pil_images else gr.Gallery(visible=False),
+            markdown_text,
             gr.JSON(value=document_response, visible=True),
         )
 
