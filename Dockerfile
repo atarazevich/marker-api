@@ -45,7 +45,8 @@ RUN python -c "from marker.models import load_all_models; load_all_models()" || 
 
 EXPOSE 8080
 
-HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
-    CMD python -c "import requests; requests.get('http://localhost:8080/health', timeout=5)" || exit 1
+# Healthcheck disabled temporarily - may interfere with long-running requests
+# HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+#     CMD python -c "import requests; requests.get('http://localhost:8080/health', timeout=5)" || exit 1
 
 CMD ["python", "server.py", "--host", "0.0.0.0", "--port", "8080"]
