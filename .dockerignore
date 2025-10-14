@@ -1,0 +1,73 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# CI/CD
+.github
+
+# Docker
+Dockerfile*
+docker-compose*.yml
+.dockerignore
+
+# Python
+__pycache__
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info
+dist
+build
+*.egg
+.pytest_cache
+.coverage
+htmlcov
+.tox
+.nox
+
+# Virtual environments
+venv
+env
+.venv
+ENV
+env.bak
+venv.bak
+.conda
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Logs and temp files
+logs/
+*.log
+*.pid
+
+# Test data and experiments
+test_data
+experiments
+training
+wandb
+pdfs/
+
+# Documentation
+# Keep README.md as it's required by pyproject.toml
+docs/
+
+# Examples (comment out if needed in container)
+examples/
+
+# Local config
+.env
+.env.local
+local.env
+private.py
+
+# Poetry
+poetry.lock
