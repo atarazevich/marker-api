@@ -52,7 +52,8 @@ app.add_middleware(
     allow_credentials=True,
 )
 
-app = gr.mount_gradio_app(app, demo_ui, path="")
+# Mount Gradio demo UI at /demo path (not root to avoid intercepting API endpoints)
+app = gr.mount_gradio_app(app, demo_ui, path="/demo")
 
 
 @app.get("/health", response_model=HealthResponse)

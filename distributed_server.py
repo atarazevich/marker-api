@@ -101,7 +101,8 @@ def setup_routes(app: FastAPI, celery_live: bool):
         logger.info("Adding real-time conversion route")
     else:
         logger.warning("Celery routes not added as Celery is not alive")
-    app = gr.mount_gradio_app(app, demo_ui, path="")
+    # Mount Gradio demo UI at /demo path (not root to avoid intercepting API endpoints)
+    app = gr.mount_gradio_app(app, demo_ui, path="/demo")
 
 
 def parse_args():
